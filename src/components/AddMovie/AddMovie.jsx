@@ -21,6 +21,8 @@ const useModal = makeStyles((theme) => ({
 }));
 
 function AddMovie() {
+     const dispatch = useDispatch();
+    const [movie, setMovie] = useState([]);
     const [movieTitle, setMovieTitle] = useState('');
     const [movieDescription, setMovieDescription] = useState('');
     const [moviePoster, setMoviePoster] = useState('');
@@ -28,6 +30,19 @@ function AddMovie() {
     const modal = useModal();
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => {setOpen(false);};
+
+    const submit = () => {
+        if (movieTitle == "" || movieDescription == "" || moviePoster == "") {
+            console.log('nice try bitch, fill it in');
+            return false;
+        }
+        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster});
+        console.log(movie);
+        dispatch({
+            type: "ADD_MOVIE",
+            payload: movie
+        })
+    }
 
     return (
         <>
@@ -56,7 +71,7 @@ function AddMovie() {
                 <br />
                 <Button variant="contained" color="primary" startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
                 &nbsp;
-                <Button variant="contained" color="primary" endIcon={<PublishIcon />}>Submit</Button> 
+                <Button variant="contained" color="primary" endIcon={<PublishIcon />} onClick={submit}>Submit</Button> 
                 </div>
             </Fade>
             </Modal>

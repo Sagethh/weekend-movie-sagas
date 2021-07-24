@@ -16,6 +16,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('FETCH_MOVIES_AND_GENRES', fetchMoviesAndGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
+    yield takeEvery('ADD_MOVIE', addMovie)
 }
 
 function* fetchAllMovies() {
@@ -29,6 +30,12 @@ function* fetchAllMovies() {
         console.log('get all error');
     }
 }
+
+function* addMovie(movie) {
+    console.log(movie.payload[0]);
+
+}
+
 
 function* fetchGenres(IDs) {
     try {
