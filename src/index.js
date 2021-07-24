@@ -46,11 +46,11 @@ function* fetchGenres(IDs) {
             //console.log(genre.data[intersection[i]].name);
             sendBack.push(genre.data[intersection[i]].name);
         }
-        console.log(sendBack);
+        //console.log(sendBack);
         yield put ({type: "SET_GENRES", payload: sendBack});
     }
     catch {
-        console.log('get all error');
+        console.log('fetch genres error');
     }
 }
 
@@ -65,11 +65,11 @@ function* fetchMoviesAndGenres(movie) {
                 genreIDs.push(movies.data[x].genre_id);
             }
         }
-        console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`);
+        //console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`);
         yield put({ type: 'FETCH_GENRES', payload: genreIDs });
     }
     catch {
-        console.log('get all error');
+        console.log('fetch moves and genres error');
     }
 }
 
