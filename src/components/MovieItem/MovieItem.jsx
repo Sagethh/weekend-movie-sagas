@@ -32,7 +32,7 @@ function MovieItem(movie) {
     }
     const movieData = () => {
         handleOpen();
-        dispatch({ type: 'FETCH_GENRES', payload: movie.movie })
+        dispatch({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })
     }
 
 

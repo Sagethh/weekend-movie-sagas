@@ -14,6 +14,7 @@ import axios from 'axios';
 // Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+    yield takeEvery('FETCH_MOVIES_AND_GENRES', fetchMoviesAndGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
 }
 
@@ -21,7 +22,7 @@ function* fetchAllMovies() {
     // get all movies from the DB
     try {
         const movies = yield axios.get('/api/movie');
-        console.log('getting all movies:', movies.data);
+        //console.log('getting all movies:', movies.data);
         yield put({ type: 'SET_MOVIES', payload: movies.data });
     }
     catch {
@@ -29,7 +30,30 @@ function* fetchAllMovies() {
     }
 }
 
-function* fetchGenres(movie) {
+function* fetchGenres(IDs) {
+    try {
+        const genre = yield axios.get('/api/genre/genreNames');
+        const firstArray = [];
+        let sendBack = [];
+        for (let x = 0; x < genre.data.length; x++) {firstArray.push(genre.data[x].id);}
+        const secondArray = IDs.payload;
+        //console.log(firstArray);
+        //console.log(secondArray);
+        const intersection = firstArray.filter(element => secondArray.includes(element));
+        //console.log(intersection);
+        for (let i = 0; i < intersection.length; i++) {
+            //console.log(intersection[i]);
+            //console.log(genre.data[intersection[i]].name);
+            sendBack.push(genre.data[intersection[i]].name);
+        }
+        console.log(sendBack);
+    }
+    catch {
+
+    }
+}
+
+function* fetchMoviesAndGenres(movie) {
     try {
         const movies = yield axios.get(`/api/genre`);
         //console.log('movie:', movie.payload);
@@ -41,7 +65,7 @@ function* fetchGenres(movie) {
             }
         }
         console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`);
-        yield put({ type: 'SET_GENRES', payload: genreIDs });
+        yield put({ type: 'FETCH_GENRES', payload: genreIDs });
     }
     catch {
         console.log('get all error');
