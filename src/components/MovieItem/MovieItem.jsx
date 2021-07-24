@@ -20,19 +20,19 @@ const useModal = makeStyles((theme) => ({
 }));
 
 function MovieItem(movie) {
+    const genres = useSelector(store => store.genres);
     const classes = useStyles();
     const dispatch = useDispatch();
     const modal = useModal();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => {setOpen(false);};
-
-    const test = () => {
-        dispatch({ type: 'FETCH_GENRES', payload: movie.movie.id })
-    }
     const movieData = () => {
         handleOpen();
         dispatch({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })
+    }
+    const genrestuff = () => {
+        console.log(genres);
     }
 
 
@@ -55,7 +55,14 @@ function MovieItem(movie) {
                     <div className={modal.paper}>
                         <h2 id="transition-modal-title">{movie.movie.title}</h2>
                         <p id="transition-modal-description">{movie.movie.description}</p>
-                        <button onClick={test}>Test</button>
+                        <h4> Genres: </h4>
+                            {genres.map((genre) => {
+                                return (
+                                    <>
+                                        {genre},&nbsp;
+                                    </>
+                                    );
+                            })}
                     </div>
                 </Fade>
             </Modal>
@@ -63,7 +70,6 @@ function MovieItem(movie) {
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        onClick={test}
                         className={classes.media}
                         src={movie.movie.poster}
                         title={movie.movie.title}

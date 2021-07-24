@@ -47,9 +47,10 @@ function* fetchGenres(IDs) {
             sendBack.push(genre.data[intersection[i]].name);
         }
         console.log(sendBack);
+        yield put ({type: "SET_GENRES", payload: sendBack});
     }
     catch {
-
+        console.log('get all error');
     }
 }
 
