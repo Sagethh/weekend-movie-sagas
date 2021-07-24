@@ -24,9 +24,7 @@ function MovieItem(movie) {
     const modal = useModal();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {setOpen(true);};
-    const handleClose = () => {
-    setOpen(false);
-  };
+    const handleClose = () => {setOpen(false);};
 
 
     const test = () => {
@@ -53,6 +51,7 @@ function MovieItem(movie) {
                     <div className={modal.paper}>
                         <h2 id="transition-modal-title">{movie.movie.title}</h2>
                         <p id="transition-modal-description">{movie.movie.description}</p>
+                        <button onClick={test}>Test</button>
                     </div>
                 </Fade>
             </Modal>
