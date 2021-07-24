@@ -21,16 +21,20 @@ const useModal = makeStyles((theme) => ({
 
 function MovieItem(movie) {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const modal = useModal();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => {setOpen(false);};
 
-
     const test = () => {
-        console.log(movie);
-        console.log(movie.movie.poster);
+        dispatch({ type: 'FETCH_GENRES', payload: movie.movie.id })
     }
+    const movieData = () => {
+        handleOpen();
+        dispatch({ type: 'FETCH_GENRES', payload: movie.movie })
+    }
+
 
 
     return (
@@ -63,7 +67,7 @@ function MovieItem(movie) {
                         className={classes.media}
                         src={movie.movie.poster}
                         title={movie.movie.title}
-                        onClick={handleOpen}
+                        onClick={movieData}
                     />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">

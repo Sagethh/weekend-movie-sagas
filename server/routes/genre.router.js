@@ -10,7 +10,19 @@ router.get('/', (req, res) => {
       res.send(result.rows);
     })
     .catch(err => {
-      console.log('ERROR: Get all movie genres', err);
+      console.log('ERROR: Get all movies and their genres', err);
+      res.sendStatus(500)
+    })
+});
+
+router.get('/genreNames', (req, res) => {
+  const query = `SELECT * FROM genres ORDER BY id ASC`;
+  pool.query(query)
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Get all genres', err);
       res.sendStatus(500)
     })
 });
