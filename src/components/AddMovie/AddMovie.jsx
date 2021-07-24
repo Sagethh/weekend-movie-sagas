@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,6 +11,9 @@ import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
+import PublishIcon from '@material-ui/icons/Publish';
 
 const useModal = makeStyles((theme) => ({
     modal: {display: 'flex', alignItems: 'center', justifyContent: 'center', width: "50%", margin: "auto"},
@@ -18,6 +21,9 @@ const useModal = makeStyles((theme) => ({
 }));
 
 function AddMovie() {
+    const [movieTitle, setMovieTitle] = useState('');
+    const [movieDescription, setMovieDescription] = useState('');
+    const [moviePoster, setMoviePoster] = useState('');
     const [open, setOpen] = React.useState(false);
     const modal = useModal();
     const handleOpen = () => {setOpen(true);};
@@ -25,7 +31,7 @@ function AddMovie() {
 
     return (
         <>
-        <Modal
+            <Modal
                 aria-labelledby="Upload Movie Modal"
                 aria-describedby="Upload a movie"
                 className={modal.modal}
@@ -37,20 +43,31 @@ function AddMovie() {
                     timeout: 500,
                 }}
             >
-                <Fade in={open}>
-                    <div className={modal.paper}>
-    
-                    </div>
-                </Fade>
+            <Fade in={open}>
+                <div className={modal.paper}>
+                <TextField id="Movie-Title" label="Movie Title" variant="outlined" value={movieTitle} onChange={(event) => setMovieTitle(event.target.value)}/>
+                <br />
+                <br />
+                <TextField id="Movie-Description" label="Movie Description" variant="outlined" value={movieDescription} onChange={(event) => setMovieDescription(event.target.value)}/>
+                <br />
+                <br />
+                <TextField id="Movie-Poster-URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/>
+                <br />
+                <br />
+                <Button variant="contained" color="primary" startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
+                &nbsp;
+                <Button variant="contained" color="primary" endIcon={<PublishIcon />}>Submit</Button> 
+                </div>
+            </Fade>
             </Modal>
-        <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddBoxIcon />}
-            onClick={handleOpen}
-        >
-            Add A Movie
-        </Button>   
+            <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddBoxIcon />}
+                onClick={handleOpen}
+            >
+                Add A Movie
+            </Button>   
         </>
     );
 };
