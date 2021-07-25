@@ -16,6 +16,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import PublishIcon from '@material-ui/icons/Publish';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 const useModal = makeStyles((theme) => ({
     modal: {display: 'flex', alignItems: 'center', justifyContent: 'center', width: "50%", margin: "auto"},
@@ -23,21 +25,8 @@ const useModal = makeStyles((theme) => ({
 }));
 
 function AddMovie() {
-    const [genres, setGenres] = React.useState({
-        Adventure: false,
-        Animated: false,
-        Biographical: false,
-        Comedy: false,
-        Disaster: false,
-        Drama: false,
-        Epic: false,
-        Fantasy: false,
-        Musical: false,
-        Romantic: false,
-        Science_Fiction: false,
-        Space_Opera: false,
-        Superhero: false,
-      });
+    //const [genres, setGenres] = React.useState({Adventure: false, Animated: false, Biographical: false, Comedy: false, Disaster: false, Drama: false, Epic: false, Fantasy: false, Musical: false, Romantic: false, Science_Fiction: false, Space_Opera: false, Superhero: false});
+    const [genre, setGenre] = React.useState('');
     const modal = useModal();
     const dispatch = useDispatch();
     const [movie, setMovie] = useState([]);
@@ -51,24 +40,21 @@ function AddMovie() {
     const closeGenreModal = () => {setGenreModalOpen(false);};
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => {setOpen(false);};
+    const changer = (event) => {setGenre(event.target.value);};
     const submit = () => {
         if (movieTitle == "" || movieDescription == "" || moviePoster == "") {
             console.log('nice try bitch, fill it in');
             return false;
         }
-        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster,});
-        //console.log(movie);
+        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster, genre: genre});
+        console.log(movie);
         dispatch({
             type: "ADD_MOVIE",
             payload: movie
         })
     }
 
-    const changer = (event) => {
-        setGenres({ ...genres, [event.target.name]: event.target.checked });
-        console.log(genres);
-    }
-    
+
 
     return (
         <>
@@ -86,19 +72,22 @@ function AddMovie() {
             >
             <Fade in={genreModalOpen}>
                 <div className={modal.paper}>
-                <FormControlLabel checked={genres.Adventure} name="Adventure" control={<Switch color="primary" />} label="Adventure" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Animated" control={<Switch color="primary" />} label="Animated" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Biographical" control={<Switch color="primary" />} label="Biographical" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Comedy" control={<Switch color="primary" />} label="Comedy" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Disaster" control={<Switch color="primary" />} label="Disaster" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Drama" control={<Switch color="primary" />} label="Drama" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Epic" control={<Switch color="primary" />} label="Epic" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Fantasy" control={<Switch color="primary" />} label="Fantasy" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Musical" control={<Switch color="primary" />} label="Musical" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Romantic" control={<Switch color="primary" />} label="Romantic" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Science_Fiction" control={<Switch color="primary" />} label="Science Fiction" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Space-Opera" control={<Switch color="primary" />} label="Space-Opera" labelPlacement="start" onChange={changer}/>
-                <FormControlLabel checked={genres.Animated} name="Superhero" control={<Switch color="primary" />} label="Superhero" labelPlacement="start" onChange={changer}/>
+                <RadioGroup value={genre} onChange={changer}>
+                <FormControlLabel value="1" control={<Radio color="primary" />} label="Adventure" labelPlacement="start"/>
+                <FormControlLabel value="2" control={<Radio color="primary" />} label="Animated" labelPlacement="start"/>
+                <FormControlLabel value="3" control={<Radio color="primary" />} label="Biographical" labelPlacement="start"/>
+                <FormControlLabel value="4" control={<Radio color="primary" />} label="Comedy" labelPlacement="start"/>
+                <FormControlLabel value="5" control={<Radio color="primary" />} label="Disaster" labelPlacement="start"/>
+                <FormControlLabel value="6" control={<Radio color="primary" />} label="Drama" labelPlacement="start"/>
+                <FormControlLabel value="7" control={<Radio color="primary" />} label="Epic" labelPlacement="start"/>
+                <FormControlLabel value="8" control={<Radio color="primary" />} label="Fantasy" labelPlacement="start"/>
+                <FormControlLabel value="9" control={<Radio color="primary" />} label="Musical" labelPlacement="start"/>
+                <FormControlLabel value="10" control={<Radio color="primary" />} label="Romantic" labelPlacement="start"/>
+                <FormControlLabel value="11" control={<Radio color="primary" />} label="Science Fiction" labelPlacement="start"/>
+                <FormControlLabel value="12" control={<Radio color="primary" />} label="Space-Opera" labelPlacement="start"/>
+                <FormControlLabel value="13" control={<Radio color="primary" />} label="Superhero" labelPlacement="start"/>
+                </RadioGroup>
+                <Button variant="contained" color="primary" startIcon={<CloseIcon />} onClick={closeGenreModal}>Close</Button>
                 </div>
             </Fade>
             </Modal>
@@ -125,7 +114,7 @@ function AddMovie() {
                 <TextField id="Movie-Poster-URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/>
                 <br />
                 <br />
-                <Button variant="contained" color="primary" endIcon={<PublishIcon />} onClick={openGenreModal}>Select Genres</Button>
+                <Button variant="contained" color="primary" endIcon={<PublishIcon />} onClick={openGenreModal}>Select Genre</Button>
                 <br />
                 <br />
                 <Button variant="contained" color="primary" startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
