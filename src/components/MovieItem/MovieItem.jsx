@@ -11,9 +11,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -26,11 +24,9 @@ const useModal = makeStyles((theme) => ({
 // materialUI styling
 
 function MovieItem(movie) { // main function for this page
-    const editor = useSelector(store => store.editor); // genre handler
     const handleEditorOpen = () => { setEditorOpen(true); setEditMovieTitle(movie.movie.title); setEditMovieGenre(movie.movie.genre); setEditMovieDescription(movie.movie.description); setEditMoviePoster(movie.movie.poster); setEditMovieID(movie.movie.id)}; //  materialUI modal handler
     const [editorOpen, setEditorOpen] = React.useState(false); // materialUI modal handler
     const classes = useStyles(); // materialUI style handler
-    const history = useHistory();
     const modal = useModal(); // materialUI style handler
     const [open, setOpen] = React.useState(false); // main modal open handler
     const handleOpen = () => { setOpen(true) }; // main modal open handler
@@ -43,8 +39,6 @@ function MovieItem(movie) { // main function for this page
     const [editMoviePoster, setEditMoviePoster] = useState(''); // handles addMovie poster
     const genres = useSelector(store => store.genres); // genre handler
     const dispatch = useDispatch();
-    const genreHandler = [{value: 0, label: "Select An Option"}, {value: 1, label: "Adventure"}, {value: 2, label: "Animated"}, {value: 3, label: "Biographical"}, {value: 4, label: "Comedy"}, {value: 5, label: "Disaster"}, {value: 6, label: "Drama"}, {value: 7, label: "Epic"}, {value: 8, label: "Fantasy"}, {value: 9, label: "Musical"}, {value: 10, label: "Romantic"}, {value: 11, label: "Science Fiction"}, {value: 12, label: "Space-Opera"}, {value: 13, label: "Superhero"}];
-    // genre selector for materialUI
     const handleEditorClose = () => { setEditorOpen(false); setEditMovieTitle(''); setEditMovieGenre(0); setEditMovieDescription(''); setEditMoviePoster('') };
     // clears all inputs on modal close
     const movieCardHandler = () => { handleOpen(); dispatch ({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })}; // main modal close handler
@@ -57,17 +51,14 @@ function MovieItem(movie) { // main function for this page
             payload: movieToDelete
         })};
         const saveChanges = () => { // submit onClick function
-            if (movieTitle == "" || movieDescription == "" || moviePoster == "" || movieGenre == 0) { // checks for any empty inputs and declines to post if there are any
-                alert('Please fill in all inputs');
-                return false;
-            };
-            editedMovie.push({ id: movieID, title: movieTitle, description: movieDescription, poster: moviePoster, genre_id: movieGenre }); // pushes movie data into movie array to send back to server
+            editedMovie.push({ id: editMovieID, title: editMovieTitle, description: editMovieDescription, poster: editMoviePoster}); // pushes movie data into movie array to send back to server
             console.log(editedMovie[0]); // test function
             dispatch({ // sends an ADD_MOVIE request on submit with the payload of movie array (all the data we collected in the form)
                type: "SAVE_EDITED_MOVIE",
-               payload: movie
+               payload: editedMovie
            });
-            handleClose(); // requests function to clears everything
+           handleClose();
+           handleEditorClose(); // requests function to clears everything
         };
 
 

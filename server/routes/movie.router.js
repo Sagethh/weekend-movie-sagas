@@ -9,9 +9,22 @@ router.get('/', (req, res) => {
       res.send(result.rows);
     })
     .catch(error => {
-      console.log('Error in movie.route.get', error);
+      console.log('Error in movie.router.get', error);
       res.sendStatus(500);
     });
+});
+
+router.post('/UPDATE_MOVIE', (req, res) => {
+  const qText = 'UPDATE movies SET title=$1, poster=$2, description=$3 WHERE id=$4;';
+  console.log(req.body);
+  pool.query(qText, [req.body.title, req.body.poster, req.body.description, req.body.id])
+  .then (result => {
+    res.send(result.rows);
+  })
+  .catch (error => {
+    console.log('Error in movie.router.update', error);
+    res.sendStatus(500);
+  });
 });
 
 router.delete('/DELETE_MOVIE_AND_GENRE', (req, res) => {
@@ -23,7 +36,7 @@ router.delete('/DELETE_MOVIE_AND_GENRE', (req, res) => {
     res.send(result.rows);
   })
   .catch(error => {
-    console.log('Error in movie.route.delete', error);
+    console.log('Error in movie.router.delete', error);
     res.sendStatus(500);
   });
 });
@@ -37,7 +50,7 @@ router.delete('/DELETE_MOVIE', (req, res) => {
     res.send(result.rows);
   })
   .catch(error => {
-    console.log('Error in second movie.route.delete', error);
+    console.log('Error in second movie.router.delete', error);
     res.sendStatus(500);
   });
 });
@@ -67,12 +80,12 @@ router.post('/', (req, res) => {
         //Now that both are done, send back success!
         res.sendStatus(201);
       }).catch(error => {
-        console.log('Error in second movie.route.post', error);
+        console.log('Error in second movie.router.post', error);
         res.sendStatus(500);
       });
 // Catch for first query
   }).catch(error => {
-    console.log('Error in first movie.route.post', error);
+    console.log('Error in first movie.router.post', error);
     res.sendStatus(500);
   });
 });

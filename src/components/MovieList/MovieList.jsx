@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './MovieList.css';
 import MovieItem from '../MovieItem/MovieItem';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 function MovieList() {

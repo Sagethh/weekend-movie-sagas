@@ -35,8 +35,16 @@ function* fetchAllMovies () {
 };
 
 function* saveEditedMovie (movie) {
-    console.log('Trying to edit movie:', movie.payload);
-}
+    const editedMovie = movie.payload[0]
+    //console.log('Trying to edit movie:', editedMovie);
+    try {
+        yield call (axios.post, '/api/movie/UPDATE_MOVIE', editedMovie);
+        yield put ({ type:'FETCH_MOVIES' });
+    }
+    catch (error) {
+        console.log ('Error in saveEditedMovie:', error);
+    };
+};
 
 function* deleteMoviesAndGenres (movie) {
     // console.log('trying to delete movie with ID:', movie); // test function
@@ -141,16 +149,6 @@ const movies = (state = [], action) => {
     };
 };
 
-const editor = (state = [], action) => {
-    switch(action.type) {
-        case 'EDIT_MOVIE':
-            return action.payload;
-        default:
-            return state;
-    }
-}
-
-
 // Used to store the movie genres
 const genres = (state = [], action) => {
     switch (action.type) {
@@ -167,7 +165,6 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
-        editor,
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
