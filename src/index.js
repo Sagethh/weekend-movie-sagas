@@ -19,6 +19,7 @@ function* rootSaga() { // listener functions waiting for calls
     yield takeEvery('ADD_MOVIE', addMovie);
     yield takeEvery('DELETE_MOVIES_GENRES', deleteMoviesAndGenres);
     yield takeEvery('DELETE_MOVIE', deleteMovie);
+    yield takeEvery('SAVE_EDITED_MOVIE', saveEditedMovie);
 };
 
 function* fetchAllMovies () {
@@ -32,6 +33,10 @@ function* fetchAllMovies () {
         console.log ('Error in fetchAllMovies:', error);
     };
 };
+
+function* saveEditedMovie (movie) {
+    console.log('Trying to edit movie:', movie.payload);
+}
 
 function* deleteMoviesAndGenres (movie) {
     // console.log('trying to delete movie with ID:', movie); // test function
