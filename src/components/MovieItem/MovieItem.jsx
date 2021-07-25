@@ -80,13 +80,15 @@ function MovieItem(movie) { // main function for this page
             <Modal align="center" aria-labelledby="Movie Title Modal" aria-describedby={movie.movie.title} className={modal.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{timeout: 500}}>
                 <Fade in={open}>
                     <div className={modal.paper} style={{width: '750px'}}>
-                        <h2 ul id={movie.movie.title}><u>{movie.movie.title}</u></h2>
+                        <h1 ul id={movie.movie.title}><u>{movie.movie.title}</u></h1>
+                        <Typography gutterBottom variant="h6" component="h3">
                         <p id={movie.movie.description} style={{backgroundColor:"WhiteSmoke", padding:"20px", borderRadius:"25px"}}>{movie.movie.description}</p>    
-                        <h4><u>Genres:</u></h4>
-                        <>
-                            {genres.map( (genre) => { return (<p key={genre}> {genre} </p>) })}
-                        </>
+                        </Typography>
+                        <p>
+                            {genres.map( (genre) => { return (<Typography gutterBottom variant="body1" component="body1">{genre}<br /></Typography>)})}
+                        </p>
                         <Button variant="contained" color="secondary" onClick={() => { deleteMovie(movie) }}>Delete Movie</Button>
+                        &nbsp;
                         <Button variant="contained" color="primary" onClick={handleEditorOpen}>Edit Movie</Button>
                     </div>
                 </Fade>

@@ -47,12 +47,12 @@ function AddMovie() {
 
     return ( // main return, what will be shown on the DOM
         <>
-            <Modal aria-labelledby="Upload Movie Modal" aria-describedby="Upload a movie" className={modal.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{timeout: 500}}>
+            <Modal aria-labelledby="Upload Movie Modal" aria-describedby="Upload a movie" align="center"  className={modal.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{timeout: 500}}>
                 <Fade in={open}>
-                    <div className={modal.paper}>
-                        <TextField id="Movie Title" label="Movie Title" variant="outlined" value={movieTitle} onChange={(event) => setMovieTitle(event.target.value)}/><br /><br />
+                    <div className={modal.paper} style={{width: '550px'}}>
+                        <TextField id="Movie Title" label="Movie Title" variant="outlined" style={{width: "100%"}} value={movieTitle} onChange={(event) => setMovieTitle(event.target.value)}/><br /><br />
                         <TextField id="Movie Description" label="Movie Description" style={{width: "100%"}} multiline maxRows={6} variant="outlined" value={movieDescription} onChange={(event) => setMovieDescription(event.target.value)}/><br /><br />
-                        <TextField id="Movie Poster URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/><br /><br />
+                        <TextField id="Movie Poster URL" label="Movie Poster URL" style={{width: "100%"}} variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/><br /><br />
                         <TextField select id="Movie Genre Selector" label="Genre" style={{width: "100%"}} SelectProps={{native: true}} variant="outlined" onChange={(event) => setMovieGenre(event.target.value)}>
                             {genreHandler.map((option) => (
                                 <option key={option.value} value={option.value}>
