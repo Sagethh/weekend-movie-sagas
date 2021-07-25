@@ -43,6 +43,9 @@ function MovieItem(movie) { // main function for this page
     // clears all inputs on modal close
     const movieCardHandler = () => { handleOpen(); dispatch ({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })}; // main modal close handler
     const deleteMovie = (movie) => { // function to delete movie on button click
+        if (confirm(`Delete ${movie.movie.title}?`) === false) { // pop up asking for confirmation of delete, if cancel is hit decline to delete
+            return false;
+        };
         let movieToDelete = movie.movie.id;
         // console.log('trying to delete movie #', movieToDelete); // test function
         dispatch ({
