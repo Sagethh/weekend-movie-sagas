@@ -13,7 +13,6 @@ import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Editor from '../Editor/Editor';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
@@ -71,20 +70,6 @@ function MovieItem(movie) { // main function for this page
             handleClose(); // requests function to clears everything
         };
 
-    const editMovie = (movie) => {
-        handleEditorOpen();
-        //console.log(movie);
-        //console.log(`passing:`, movie.movie);
-        dispatch({
-            type: 'EDIT_MOVIE',
-            payload: movie
-        });
-        return (
-           <Editor key={movie.id} movie={movie} /> 
-        )
-        
-        //history.push('/editor');
-    }
 
     return ( // main return, what will be shown on the DOM
         <Box width="18%" minWidth="300px" p={"5px"} margin="auto">
