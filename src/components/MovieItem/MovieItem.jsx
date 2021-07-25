@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({root: {width: 350, height: 600}, media: {height: 500,}});
 const useModal = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ function MovieItem(movie) {
                                 );
                             })}
                         </ul>
+                        <Button variant="contained" color="primary">Delete Movie</Button>
                     </div>
                 </Fade>
             </Modal>

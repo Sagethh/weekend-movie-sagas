@@ -23,7 +23,7 @@ function* fetchAllMovies() {
     // get all movies from the DB
     try {
         const movies = yield axios.get('/api/movie');
-        //console.log('getting all movies:', movies.data);
+        //console.log('getting all movies:', movies.data); // test function
         yield put({ type: 'SET_MOVIES', payload: movies.data });
     }
     catch {
@@ -35,7 +35,7 @@ function* addMovie(movie) {
     try {
         const movieToAdd = movie.payload[0];
         console.log(movieToAdd);
-        //const add = yield axios.post('/api/movie');
+        //const add = yield axios.post('/api/movie'); // test function
         yield call (axios.post, '/api/movie', movieToAdd);
         yield put ({type:'FETCH_MOVIES'});
     }
@@ -53,13 +53,13 @@ function* fetchGenres(IDs) {
         let sendBack = [];
         for (let x = 0; x < genre.data.length; x++) {firstArray.push(genre.data[x].id);}
         const secondArray = IDs.payload;
-        //console.log(firstArray);
-        //console.log(secondArray);
+        //console.log(firstArray); // test function
+        //console.log(secondArray); // test function
         const intersection = firstArray.filter(element => secondArray.includes(element));
         //console.log(intersection);
         for (let i = 0; i < intersection.length; i++) {
-            //console.log(intersection[i]);
-            //console.log(genre.data[intersection[i]].name);
+            //console.log(intersection[i]); // test function
+            //console.log(genre.data[intersection[i]].name); // test function
             sendBack.push(genre.data[intersection[i]-1].name);
         }
         console.log(sendBack);
@@ -73,15 +73,15 @@ function* fetchGenres(IDs) {
 function* fetchMoviesAndGenres(movie) {
     try {
         const movies = yield axios.get(`/api/genre`);
-        //console.log('movie:', movie.payload);
+        //console.log('movie:', movie.payload); // test function
         let genreIDs = [];
         for (let x = 0; x < movies.data.length; x++) {
-            //console.log(movies.data[x].movie_id, movies.data[x].genre_id);
+            //console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
             if (movies.data[x].movie_id == movie.payload.id) {
                 genreIDs.push(movies.data[x].genre_id);
             }
         }
-        //console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`);
+        //console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`); // test function
         yield put({ type: 'FETCH_GENRES', payload: genreIDs });
     }
     catch {
@@ -106,7 +106,7 @@ const movies = (state = [], action) => {
 const genres = (state = [], action) => {
     switch (action.type) {
         case 'SET_GENRES':
-            //console.log('setting genre', action.payload)
+            //console.log('setting genre', action.payload) // test function
             return action.payload;
         default:
             return state;
