@@ -96,7 +96,7 @@ function MovieItem(movie) { // main function for this page
             <Card className={classes.root} style={{maxHeight: "600px"}}>
                 <CardActionArea>
                     <CardMedia component="img" className={classes.media} src={movie.movie.poster} title={movie.movie.title} onClick={movieCardHandler}/>
-                    <CardContent>
+                    <CardContent style={{backgroundColor:"grey"}}>
                         <Typography gutterBottom variant="h6" component="h3" noWrap>{movie.movie.title}</Typography>
                     </CardContent>
                 </CardActionArea>

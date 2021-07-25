@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>The Movies Saga!</h1>
+      <h1 style={{color: "white"}}>The Movies Saga!</h1>
         <AddMovie />
         <MovieList />
     </div>

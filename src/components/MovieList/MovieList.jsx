@@ -14,7 +14,7 @@ function MovieList() {
 
     return ( // main return, what will be shown on the DOM
         <main>
-            <h1>Movie List</h1>
+            <h1 style={{color: "white"}}>Movie List</h1>
             <section className="movies">
                 <Box width="95%" margin="auto" display="flex" flexWrap="wrap" flexDirection="row">
                     {movies.map(movie => {

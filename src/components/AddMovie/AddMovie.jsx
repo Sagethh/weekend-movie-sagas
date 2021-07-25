@@ -66,7 +66,7 @@ function AddMovie() {
                     </div>
                 </Fade>
             </Modal>
-            <Button variant="contained" color="primary" startIcon={<AddBoxIcon />} onClick={handleOpen}>Add A Movie</Button>   
+            <Button variant="contained" color="primary" style={{width: "250px", height: "60px"}}startIcon={<AddBoxIcon />} onClick={handleOpen}>Add A Movie</Button>   
         </>
     );
 };
