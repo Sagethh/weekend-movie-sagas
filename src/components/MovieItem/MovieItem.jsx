@@ -11,8 +11,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
-const useStyles = makeStyles({root: {width: 350, height: 600}, media: {height: 500,}});
+const useStyles = makeStyles({root: {width: "100%", height: "100%"}, media: {height: 500,}});
 const useModal = makeStyles((theme) => ({
     modal: {display: 'flex', alignItems: 'center', justifyContent: 'center', width: "45%", maxWidth:"700px", margin: "auto"},
     paper: {backgroundColor: theme.palette.background.paper, borderRadius:'10%', border: '2px solid #000', boxShadow: theme.shadows[5], padding: theme.spacing(2, 4, 3)}
@@ -38,7 +39,7 @@ function MovieItem(movie) { // main function for this page
         })};
 
     return ( // main return, what will be shown on the DOM
-        <Grid item>
+        <Box width="18%" minWidth="300px" p={"5px"} margin="auto">
             <Modal align="center" aria-labelledby="Movie Title Modal" aria-describedby={movie.movie.title} className={modal.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{timeout: 500}}>
                 <Fade in={open}>
                     <div className={modal.paper}>
@@ -52,15 +53,15 @@ function MovieItem(movie) { // main function for this page
                     </div>
                 </Fade>
             </Modal>
-            <Card className={classes.root}>
+            <Card className={classes.root} style={{maxHeight: "600px"}}>
                 <CardActionArea>
                     <CardMedia component="img" className={classes.media} src={movie.movie.poster} title={movie.movie.title} onClick={movieCardHandler}/>
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">{movie.movie.title}</Typography>
+                        <Typography gutterBottom variant="h6" component="h3" noWrap>{movie.movie.title}</Typography>
                     </CardContent>
                 </CardActionArea>
             </Card>
-        </Grid>
+        </Box>
     );
 };
 

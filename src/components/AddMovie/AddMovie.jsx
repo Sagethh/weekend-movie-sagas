@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import PublishIcon from '@material-ui/icons/Publish';
 
 const useModal = makeStyles((theme) => ({ 
-    modal: {display: 'flex', alignItems: 'center', justifyContent: 'center', width: "50%", margin: "auto"},
+    modal: {display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%", margin: "auto"},
     paper: {backgroundColor: theme.palette.background.paper, border: '2px solid #000', boxShadow: theme.shadows[5], padding: theme.spacing(2, 4, 3),},
 }));
 // materialUI styling
@@ -51,7 +51,7 @@ function AddMovie() {
                 <Fade in={open}>
                     <div className={modal.paper}>
                         <TextField id="Movie Title" label="Movie Title" variant="outlined" value={movieTitle} onChange={(event) => setMovieTitle(event.target.value)}/><br /><br />
-                        <TextField id="Movie Description" label="Movie Description" variant="outlined" value={movieDescription} onChange={(event) => setMovieDescription(event.target.value)}/><br /><br />
+                        <TextField id="Movie Description" label="Movie Description" style={{width: "100%"}} multiline maxRows={6} variant="outlined" value={movieDescription} onChange={(event) => setMovieDescription(event.target.value)}/><br /><br />
                         <TextField id="Movie Poster URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/><br /><br />
                         <TextField select id="Movie Genre Selector" label="Genre" style={{width: "100%"}} SelectProps={{native: true}} variant="outlined" onChange={(event) => setMovieGenre(event.target.value)}>
                             {genreHandler.map((option) => (
