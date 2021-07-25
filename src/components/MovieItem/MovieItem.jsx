@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -43,7 +42,6 @@ function MovieItem(movie) { // main function for this page
     const handleEditorClose = () => { setEditorOpen(false); setEditMovieTitle(''); setEditMovieGenre(0); setEditMovieDescription(''); setEditMoviePoster('') };
     // clears all inputs on modal close
     const movieCardHandler = () => { handleOpen(); dispatch ({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })}; // main modal close handler
-
     const deleteMovie = (movie) => { // function to delete movie on button click
         let movieToDelete = movie.movie.id;
         // console.log('trying to delete movie #', movieToDelete); // test function
@@ -51,13 +49,19 @@ function MovieItem(movie) { // main function for this page
             type: 'DELETE_MOVIES_GENRES',
             payload: movieToDelete
         })};
+    
     const saveChanges = () => { // submit onClick function
+        if (editMovieTitle == "" || editMovieDescription == "" || editMoviePoster == "") { // checks for any empty inputs and declines to post if there are any
+            alert('Please fill in all inputs');
+            return false;
+        };
         editedMovie.push({ id: editMovieID, title: editMovieTitle, description: editMovieDescription, poster: editMoviePoster}); // pushes movie data into movie array to send back to server
         // console.log(editedMovie[0]); // test function
         dispatch({ // sends an ADD_MOVIE request on submit with the payload of movie array (all the data we collected in the form)
             type: "SAVE_EDITED_MOVIE",
             payload: editedMovie
         });
+        setEditedMovie([]);
         handleClose();
         handleEditorClose(); // requests function to clears everything
     };

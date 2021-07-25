@@ -35,10 +35,10 @@ function* fetchAllMovies () {
 };
 
 function* saveEditedMovie (movie) {
-    const editedMovie = movie.payload[0]
-    //console.log('Trying to edit movie:', editedMovie);
+    const editedMovie = movie.payload[0] // set a variable equal to the data we want
+    console.log('Trying to edit movie:', editedMovie); // test function
     try {
-        yield call (axios.post, '/api/movie/UPDATE_MOVIE', editedMovie);
+        yield call (axios.post, '/api/movie/UPDATE_MOVIE', editedMovie); // post our edits to axios
         yield put ({ type:'FETCH_MOVIES' });
     }
     catch (error) {
