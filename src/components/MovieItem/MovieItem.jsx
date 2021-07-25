@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -30,10 +31,11 @@ function MovieItem(movie) {
     // onclick function, serves as a pass for other stuff if needed
 
     const deleteMovie = (movie) => {
-        //console.log('trying to delete movie #', movie.movie.id);
+        let movieToDelete = movie.movie.id
+        console.log('trying to delete movie #', movieToDelete);
         dispatch({
             type: 'DELETE_MOVIE',
-            payload: movie.movie.id
+            payload: movieToDelete
         });
     };
 

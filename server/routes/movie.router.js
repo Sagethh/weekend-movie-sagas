@@ -16,13 +16,10 @@ router.get('/', (req, res) => {
 
 });
 
-router.post('/delete', (req, res) => {
-  console.log("req body is", req.body);
-  console.log('killing 51');
-  const qText = `DELETE FROM movies WHERE id=("id")
-  VALUES ($1)
-  RETURNING "id";`
-  pool.query(qText, [51])
+router.delete('/', (req, res) => {
+  const qText = `DELETE FROM movies_genres WHERE movie_id=$1;`;
+  console.log(req.body.payload);
+  pool.query(qText, [req.body.payload])
   .then( result => {
     res.send(result.rows);
   })

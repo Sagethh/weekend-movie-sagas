@@ -33,11 +33,18 @@ function* fetchAllMovies() {
 };
 
 function* deleteMovie(movie) {
-    console.log('trying to delete movie with ID:', movie.payload);
-    const movieToDelete = movie.payload;
+    console.log('trying to delete movie with ID:', movie);
+    const movieToDelete = movie;
+   
     try {
-        yield call (axios.post, '/api/movie/delete', movieToDelete);
-        yield put ({type: 'FETCH_MOVIES'});
+        const response = yield axios({
+        method: 'DELETE',
+        url: '/api/movie',
+        data: movieToDelete
+        });
+        console.log(response);
+       // yield call (axios.delete, '/api/movie/delete', movieToDelete);
+       // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete});
     }
     catch(error) {
         console.log('delete movie error', error);
@@ -112,6 +119,7 @@ const movies = (state = [], action) => {
             return state;
     };
 };
+
 
 // Used to store the movie genres
 const genres = (state = [], action) => {
