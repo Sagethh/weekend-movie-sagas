@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,6 +13,7 @@ import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Editor from '../Editor/Editor';
 
 const useStyles = makeStyles({root: {width: "100%", height: "100%"}, media: {height: 500,}});
 const useModal = makeStyles((theme) => ({
@@ -22,6 +24,7 @@ const useModal = makeStyles((theme) => ({
 
 function MovieItem(movie) { // main function for this page
     const classes = useStyles(); // materialUI style handler
+    const history = useHistory();
     const modal = useModal(); // materialUI style handler
     const [open, setOpen] = React.useState(false); // main modal open handler
     const handleOpen = () => { setOpen(true) }; // main modal open handler
@@ -38,6 +41,17 @@ function MovieItem(movie) { // main function for this page
             payload: movieToDelete
         })};
 
+    const editMovie = (movie) => {
+        console.log(movie);
+        console.log(`passing:`, movie.movie);
+        dispatch({
+            type: 'EDIT_MOVIE',
+            payload: movie
+        });
+        <Editor key={movie.id} movie={movie} />
+        history.push('/editor');
+    }
+
     return ( // main return, what will be shown on the DOM
         <Box width="18%" minWidth="300px" p={"5px"} margin="auto">
             <Modal align="center" aria-labelledby="Movie Title Modal" aria-describedby={movie.movie.title} className={modal.modal} open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{timeout: 500}}>
@@ -49,7 +63,8 @@ function MovieItem(movie) { // main function for this page
                         <>
                             {genres.map( (genre) => { return (<p key={genre}> {genre} </p>) })}
                         </>
-                        <Button variant="contained" color="primary" onClick={() => { deleteMovie(movie) }}>Delete Movie</Button>
+                        <Button variant="contained" color="secondary" onClick={() => { deleteMovie(movie) }}>Delete Movie</Button>
+                        <Button variant="contained" color="primary" onClick={() => { editMovie(movie) }}>Edit Movie</Button>
                     </div>
                 </Fade>
             </Modal>

@@ -85,18 +85,14 @@ function* addMovie (movie) {
 function* fetchGenres (IDs) {
     try {
         const genre = yield axios.get ('/api/genre/GET_GENRES'); // calls genres from server
-        const firstArray = [];
+        const genreIDArray = [];
         let sendBack = [];
-        for (let x = 0; x < genre.data.length; x++) {firstArray.push(genre.data[x].id)}; // loop through genres and create an array that holds just their numeric IDs
-        const secondArray = IDs.payload;
-        // console.log(firstArray); // test function
-        // console.log(secondArray); // test function
-        const intersection = firstArray.filter(element => secondArray.includes(element)); // filters through both arrays and looks for matching IDs
-        // console.log(intersection);
-        for (let i = 0; i < intersection.length; i++) {
-            // console.log(intersection[i]); // test function
-            // console.log(genre.data[intersection[i]].name); // test function
-            sendBack.push(genre.data[intersection[i]-1].name); // pushes matching 
+        const idArray = IDs.payload;
+        for (let x = 0; x < genre.data.length; x++) {genreIDArray.push(genre.data[x].id)}; // loop through genres and create an array that holds just their numeric IDs
+        //console.log('genreIDArray array is:', genreIDArray); // test function
+        // console.log('idArray is:', idArray); // test function
+        for (let i = 0; i < idArray.length; i++) {
+            sendBack.push(genre.data[idArray[i]-1].name); // pushes matching 
         };
         // console.log(sendBack); // test function
         yield put ({ type: "SET_GENRES", payload: sendBack });
@@ -112,8 +108,10 @@ function* fetchMoviesAndGenres(movie) {
         // console.log('movie:', movie.payload); // test function
         let genreIDs = [];
         for (let x = 0; x < movies.data.length; x++) {
-            // console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
+            //console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
             if (movies.data[x].movie_id == movie.payload.id) {
+                
+                //console.log("data for this movie is:", movies.data[x].genre_id);
                 genreIDs.push (movies.data[x].genre_id);
             };
         };
@@ -138,6 +136,15 @@ const movies = (state = [], action) => {
     };
 };
 
+const editor = (state = [], action) => {
+    switch(action.type) {
+        case 'EDIT_MOVIE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 
 // Used to store the movie genres
 const genres = (state = [], action) => {
@@ -155,6 +162,7 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        editor,
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
