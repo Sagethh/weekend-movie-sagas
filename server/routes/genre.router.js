@@ -27,4 +27,8 @@ router.get('/genreNames', (req, res) => {
     })
 });
 
+// router.put('/updateGenres', (req, res) => {
+//   const qText = `INSERT INTO "mgenres"`
+// })
+
 module.exports = router;

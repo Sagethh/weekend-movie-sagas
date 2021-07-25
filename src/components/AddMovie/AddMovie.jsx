@@ -26,7 +26,7 @@ const useModal = makeStyles((theme) => ({
 
 function AddMovie() {
     //const [genres, setGenres] = React.useState({Adventure: false, Animated: false, Biographical: false, Comedy: false, Disaster: false, Drama: false, Epic: false, Fantasy: false, Musical: false, Romantic: false, Science_Fiction: false, Space_Opera: false, Superhero: false});
-    const [genre, setGenre] = React.useState('');
+    
     const modal = useModal();
     const dispatch = useDispatch();
     const [movie, setMovie] = useState([]);
@@ -39,19 +39,32 @@ function AddMovie() {
     const openGenreModal = () => {setGenreModalOpen(true);};
     const closeGenreModal = () => {setGenreModalOpen(false);};
     const handleOpen = () => {setOpen(true);};
-    const handleClose = () => {setOpen(false);};
-    const changer = (event) => {setGenre(event.target.value);};
+    const handleClose = () => {
+        setOpen(false);
+        setMovieTitle('');
+        setMovieGenre('');
+        setMovieDescription('');
+        setMoviePoster('');
+    
+    
+    };
+
+    const test = () => {
+        console.log(movieGenre)
+    }
+    const changer = (event) => {setGenre(event.target.value); console.log(movieGenre); console.log(genre)};
     const submit = () => {
-        if (movieTitle == "" || movieDescription == "" || moviePoster == "") {
+        if (movieTitle == "" || movieDescription == "" || moviePoster == "" || movieGenre == 0) {
             console.log('nice try bitch, fill it in');
             return false;
         }
-        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster, genre: genre});
-        console.log(movie);
+        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster, genre_id: movieGenre});
+        console.log(movieGenre);
         dispatch({
             type: "ADD_MOVIE",
             payload: movie
         })
+        handleClose();
     }
 
 
@@ -72,7 +85,7 @@ function AddMovie() {
             >
             <Fade in={genreModalOpen}>
                 <div className={modal.paper}>
-                <RadioGroup value={genre} onChange={changer}>
+                <RadioGroup value={movieGenre} onChange={(event) => setMovieGenre((event.target.value))}>
                 <FormControlLabel value="1" control={<Radio color="primary" />} label="Adventure" labelPlacement="start"/>
                 <FormControlLabel value="2" control={<Radio color="primary" />} label="Animated" labelPlacement="start"/>
                 <FormControlLabel value="3" control={<Radio color="primary" />} label="Biographical" labelPlacement="start"/>

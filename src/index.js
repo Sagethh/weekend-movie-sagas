@@ -37,6 +37,7 @@ function* addMovie(movie) {
         console.log(movieToAdd);
         //const add = yield axios.post('/api/movie');
         yield call (axios.post, '/api/movie', movieToAdd);
+        yield put ({type:'FETCH_MOVIES'});
     }
     catch(error) {
         console.log('error in adding movie', error);
@@ -59,9 +60,9 @@ function* fetchGenres(IDs) {
         for (let i = 0; i < intersection.length; i++) {
             //console.log(intersection[i]);
             //console.log(genre.data[intersection[i]].name);
-            sendBack.push(genre.data[intersection[i]].name);
+            sendBack.push(genre.data[intersection[i]-1].name);
         }
-        //console.log(sendBack);
+        console.log(sendBack);
         yield put ({type: "SET_GENRES", payload: sendBack});
     }
     catch {
