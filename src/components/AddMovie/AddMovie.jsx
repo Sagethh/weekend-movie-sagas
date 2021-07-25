@@ -24,20 +24,23 @@ function AddMovie() {
      const dispatch = useDispatch();
     const [movie, setMovie] = useState([]);
     const [movieTitle, setMovieTitle] = useState('');
+    const [movieGenre, setMovieGenre] = useState('');
     const [movieDescription, setMovieDescription] = useState('');
     const [moviePoster, setMoviePoster] = useState('');
     const [open, setOpen] = React.useState(false);
     const modal = useModal();
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => {setOpen(false);};
+    const numberHandler = [{value: 0,label: "Select An Option"},{value: 1,label: "1"},{value: 2,label: "2"},{value: 3,label: "3"},{value: 4,label: "4"},{value: 5,label: "5"},{value: 6,label: "6"},{value: 7,label: "7"},{value: 8,label: "8"},{value: 9,label: "9"},{value: 10,label: "10"},];
+    // big long thingy for materialUI, gives options 1-10 for the dropdown
 
     const submit = () => {
         if (movieTitle == "" || movieDescription == "" || moviePoster == "") {
             console.log('nice try bitch, fill it in');
             return false;
         }
-        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster});
-        console.log(movie);
+        movie.push({title: movieTitle, description: movieDescription, poster: moviePoster,});
+        //console.log(movie);
         dispatch({
             type: "ADD_MOVIE",
             payload: movie
@@ -64,6 +67,9 @@ function AddMovie() {
                 <br />
                 <br />
                 <TextField id="Movie-Description" label="Movie Description" variant="outlined" value={movieDescription} onChange={(event) => setMovieDescription(event.target.value)}/>
+                <br />
+                <br />
+                <TextField id="Movie-Genre" label="Movie Genre" variant="outlined" value={movieGenre} onChange={(event) => setMovieGenre(event.target.value)}/>
                 <br />
                 <br />
                 <TextField id="Movie-Poster-URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/>
