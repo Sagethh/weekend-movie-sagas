@@ -3,46 +3,44 @@ const router = express.Router();
 const pool = require('../modules/pool')
 
 router.get('/', (req, res) => {
-
   const query = `SELECT * FROM movies ORDER BY "title" ASC`;
   pool.query(query)
-    .then( result => {
+    .then(result => {
       res.send(result.rows);
     })
-    .catch(err => {
-      console.log('ERROR: Get all movies', err);
-      res.sendStatus(500)
-    })
-
+    .catch(error => {
+      console.log('Error in movie.route.get', error);
+      res.sendStatus(500);
+    });
 });
 
-router.delete('/DELETEMOVIEANDGENRE', (req, res) => {
+router.delete('/DELETE_MOVIE_AND_GENRE', (req, res) => {
   const qText = `DELETE FROM movies_genres WHERE movie_id=$1;`;
   //console.log(req.body.payload); // test function
   pool.query(qText, [req.body.payload])
   .then( 
     result => {
     res.send(result.rows);
-  }
-  )
-  .catch(err => {
-    console.log(err);
   })
-})
+  .catch(error => {
+    console.log('Error in movie.route.delete', error);
+    res.sendStatus(500);
+  });
+});
 
-router.delete('/DELETEMOVIE', (req, res) => {
+router.delete('/DELETE_MOVIE', (req, res) => {
   const qText = `DELETE FROM movies WHERE id=$1;`;
-  console.log('trying to delete from movies:', req.body.payload.payload);
+  //console.log('trying to delete from movies:', req.body.payload.payload); // test function
   pool.query(qText, [req.body.payload.payload])
   .then( 
     result => {
     res.send(result.rows);
-  }
-  )
-  .catch(err => {
-    console.log(err);
   })
-})
+  .catch(error => {
+    console.log('Error in second movie.route.delete', error);
+    res.sendStatus(500);
+  });
+});
 
 router.post('/', (req, res) => {
   console.log(req.body);
@@ -68,17 +66,15 @@ router.post('/', (req, res) => {
       pool.query(insertMovieGenreQuery, [createdMovieId, req.body.genre_id]).then(result => {
         //Now that both are done, send back success!
         res.sendStatus(201);
-      }).catch(err => {
-        // catch for second query
-        console.log(err);
-        res.sendStatus(500)
-      })
-
+      }).catch(error => {
+        console.log('Error in second movie.route.post', error);
+        res.sendStatus(500);
+      });
 // Catch for first query
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500)
-  })
-})
+  }).catch(error => {
+    console.log('Error in first movie.route.post', error);
+    res.sendStatus(500);
+  });
+});
 
 module.exports = router;

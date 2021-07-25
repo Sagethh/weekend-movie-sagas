@@ -12,119 +12,116 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';  
 
 // Create the rootSaga generator function
-function* rootSaga() {
+function* rootSaga() { // listener functions waiting for calls
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('FETCH_MOVIES_AND_GENRES', fetchMoviesAndGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
-    yield takeEvery('ADD_MOVIE', addMovie)
-    yield takeEvery('DELETE_MOVIES_GENRES', deleteMoviesGenres);
+    yield takeEvery('ADD_MOVIE', addMovie);
+    yield takeEvery('DELETE_MOVIES_GENRES', deleteMoviesAndGenres);
     yield takeEvery('DELETE_MOVIE', deleteMovie);
-}
+};
 
-function* fetchAllMovies() {
+function* fetchAllMovies () {
     // get all movies from the DB
     try {
-        const movies = yield axios.get('/api/movie');
-        //console.log('getting all movies:', movies.data); // test function
-        yield put({ type: 'SET_MOVIES', payload: movies.data });
+        const movies = yield axios.get ('/api/movie');
+        // console.log('getting all movies:', movies.data); // test function
+        yield put ({ type: 'SET_MOVIES', payload: movies.data });
     }
-    catch(error) {
-        console.log('get all error', error);
+    catch (error) {
+        console.log ('Error in fetchAllMovies:', error);
     };
 };
 
-function* deleteMoviesGenres(movie) {
-    //console.log('trying to delete movie with ID:', movie); // test function
-    const movieToDelete = movie;
-   
-    try {
-        const response = yield axios({
+function* deleteMoviesAndGenres (movie) {
+    // console.log('trying to delete movie with ID:', movie); // test function
+    try { // axios call cause delete is dumb
+        const response = yield axios ({
         method: 'DELETE',
-        url: '/api/movie/DELETEMOVIEANDGENRE',
-        data: movieToDelete
+        url: '/api/movie/DELETE_MOVIE_AND_GENRE',
+        data: movie
         });
-        //console.log(response); // test function
-       // yield call (axios.delete, '/api/movie/delete', movieToDelete); // test function
-       // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete}); // test function
-       yield put({type: "DELETE_MOVIE", payload: movie})
+        // console.log(response); // test function
+        // yield call (axios.delete, '/api/movie/delete', movieToDelete); // test function
+        // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete}); // test function
+       yield put ({ type: "DELETE_MOVIE", payload: movie}); // head over to delete_movie after deleting it from our database
     }
-    catch(error) {
-        console.log('delete movie error', error);
+    catch (error)  {
+        console.log ('Error in deleteMoviesAndGenres:', error);
     };
 };
 
-function* deleteMovie(movie) {
-    console.log('trying to delete movie with ID:', movie);
-    const movieToDelete = movie;
-    try {
-        const response = yield axios({
+function* deleteMovie (movie) {
+    // console.log('trying to delete movie with ID:', movie); // test function
+    try { // axios call cause delete is dumb
+        const response = yield axios ({
         method: 'DELETE',
-        url: '/api/movie/DELETEMOVIE',
-        data: movieToDelete
+        url: '/api/movie/DELETE_MOVIE',
+        data: movie
         });
-        console.log(response);
-       // yield call (axios.delete, '/api/movie/delete', movieToDelete);
-       // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete});
-       yield put({type: "FETCH_MOVIES"})
+        // console.log(response); // test function
+        // yield call (axios.delete, '/api/movie/delete', movieToDelete); // test function 
+        // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete}); // test function
+       yield put ({ type: "FETCH_MOVIES" });
     }
-    catch(error) {
-        console.log('delete movie error', error);
+    catch (error) {
+        console.log ('Error in deleteMovie:', error);
     };
 };
 
-function* addMovie(movie) {
+function* addMovie (movie) {
     try {
         const movieToAdd = movie.payload[0];
-        console.log(movieToAdd);
-        //const add = yield axios.post('/api/movie'); // test function
+        // console.log(movieToAdd); // test function
+        // const add = yield axios.post('/api/movie'); // test function
         yield call (axios.post, '/api/movie', movieToAdd);
-        yield put ({type:'FETCH_MOVIES'});
+        yield put ({ type:'FETCH_MOVIES' });
     }
-    catch(error) {
-        console.log('error in adding movie', error);
+    catch (error) {
+        console.log ('Error in addMovie:', error);
     };
 };
 
-function* fetchGenres(IDs) {
+function* fetchGenres (IDs) {
     try {
-        const genre = yield axios.get('/api/genre/genreNames');
+        const genre = yield axios.get ('/api/genre/GET_GENRES'); // calls genres from server
         const firstArray = [];
         let sendBack = [];
-        for (let x = 0; x < genre.data.length; x++) {firstArray.push(genre.data[x].id);}
+        for (let x = 0; x < genre.data.length; x++) {firstArray.push(genre.data[x].id)}; // loop through genres and create an array that holds just their numeric IDs
         const secondArray = IDs.payload;
-        //console.log(firstArray); // test function
-        //console.log(secondArray); // test function
+        // console.log(firstArray); // test function
+        // console.log(secondArray); // test function
         const intersection = firstArray.filter(element => secondArray.includes(element)); // filters through both arrays and looks for matching IDs
-        //console.log(intersection);
+        // console.log(intersection);
         for (let i = 0; i < intersection.length; i++) {
-            //console.log(intersection[i]); // test function
-            //console.log(genre.data[intersection[i]].name); // test function
+            // console.log(intersection[i]); // test function
+            // console.log(genre.data[intersection[i]].name); // test function
             sendBack.push(genre.data[intersection[i]-1].name); // pushes matching 
         };
         // console.log(sendBack); // test function
-        yield put ({type: "SET_GENRES", payload: sendBack});
+        yield put ({ type: "SET_GENRES", payload: sendBack });
     }
-    catch {
-        console.log('fetch genres error');
+    catch (error) {
+        console.log ('Error in fetchGenres:', error);
     };
 };
 
 function* fetchMoviesAndGenres(movie) {
     try {
-        const movies = yield axios.get(`/api/genre`);
-        //console.log('movie:', movie.payload); // test function
+        const movies = yield axios.get (`/api/genre`); // calls movies from server
+        // console.log('movie:', movie.payload); // test function
         let genreIDs = [];
         for (let x = 0; x < movies.data.length; x++) {
-            //console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
+            // console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
             if (movies.data[x].movie_id == movie.payload.id) {
-                genreIDs.push(movies.data[x].genre_id);
+                genreIDs.push (movies.data[x].genre_id);
             };
         };
-        //console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`); // test function
-        yield put({ type: 'FETCH_GENRES', payload: genreIDs });
+        // console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`); // test function
+        yield put ({ type: 'FETCH_GENRES', payload: genreIDs });
     }
-    catch {
-        console.log('fetch moves and genres error');
+    catch (error) {
+        console.log ('Error in fetchMoviesAndGenres:', error);
     };
 };
 
@@ -146,7 +143,7 @@ const movies = (state = [], action) => {
 const genres = (state = [], action) => {
     switch (action.type) {
         case 'SET_GENRES':
-            //console.log('setting genre', action.payload) // test function
+            // console.log('setting genre', action.payload) // test function
             return action.payload;
         default:
             return state;
