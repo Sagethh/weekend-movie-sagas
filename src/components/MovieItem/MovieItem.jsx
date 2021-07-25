@@ -29,6 +29,14 @@ function MovieItem(movie) {
     const movieData = () => { handleOpen(); dispatch({ type: 'FETCH_MOVIES_AND_GENRES', payload: movie.movie })};
     // onclick function, serves as a pass for other stuff if needed
 
+    const deleteMovie = (movie) => {
+        //console.log('trying to delete movie #', movie.movie.id);
+        dispatch({
+            type: 'DELETE_MOVIE',
+            payload: movie.movie.id
+        });
+    };
+
     return ( // what will be displayed on the DOM
         <div>
             <Modal
@@ -57,7 +65,7 @@ function MovieItem(movie) {
                                 );
                             })}
                         </ul>
-                        <Button variant="contained" color="primary">Delete Movie</Button>
+                        <Button variant="contained" color="primary" onClick={() => {deleteMovie(movie)}}>Delete Movie</Button>
                     </div>
                 </Fade>
             </Modal>

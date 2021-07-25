@@ -9,7 +9,7 @@ import logger from 'redux-logger';
 // Import saga middleware
 import createSagaMiddleware from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
+import axios from 'axios';  
 
 // Create the rootSaga generator function
 function* rootSaga() {
@@ -17,6 +17,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES_AND_GENRES', fetchMoviesAndGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
     yield takeEvery('ADD_MOVIE', addMovie)
+    yield takeEvery('DELETE_MOVIE', deleteMovie)
 }
 
 function* fetchAllMovies() {
@@ -26,8 +27,20 @@ function* fetchAllMovies() {
         //console.log('getting all movies:', movies.data); // test function
         yield put({ type: 'SET_MOVIES', payload: movies.data });
     }
-    catch {
-        console.log('get all error');
+    catch(error) {
+        console.log('get all error', error);
+    };
+};
+
+function* deleteMovie(movie) {
+    console.log('trying to delete movie with ID:', movie.payload);
+    const movieToDelete = movie.payload;
+    try {
+        yield call (axios.post, '/api/movie/delete', movieToDelete);
+        yield put ({type: 'FETCH_MOVIES'});
+    }
+    catch(error) {
+        console.log('delete movie error', error);
     };
 };
 
@@ -53,14 +66,14 @@ function* fetchGenres(IDs) {
         const secondArray = IDs.payload;
         //console.log(firstArray); // test function
         //console.log(secondArray); // test function
-        const intersection = firstArray.filter(element => secondArray.includes(element));
+        const intersection = firstArray.filter(element => secondArray.includes(element)); // filters through both arrays and looks for matching IDs
         //console.log(intersection);
         for (let i = 0; i < intersection.length; i++) {
             //console.log(intersection[i]); // test function
             //console.log(genre.data[intersection[i]].name); // test function
-            sendBack.push(genre.data[intersection[i]-1].name);
-        }
-        console.log(sendBack);
+            sendBack.push(genre.data[intersection[i]-1].name); // pushes matching 
+        };
+        // console.log(sendBack); // test function
         yield put ({type: "SET_GENRES", payload: sendBack});
     }
     catch {
@@ -77,8 +90,8 @@ function* fetchMoviesAndGenres(movie) {
             //console.log(movies.data[x].movie_id, movies.data[x].genre_id); // test function
             if (movies.data[x].movie_id == movie.payload.id) {
                 genreIDs.push(movies.data[x].genre_id);
-            }
-        }
+            };
+        };
         //console.log(`Genre IDs of ${movie.payload.title} are: ${genreIDs}`); // test function
         yield put({ type: 'FETCH_GENRES', payload: genreIDs });
     }
@@ -104,7 +117,7 @@ const movies = (state = [], action) => {
 const genres = (state = [], action) => {
     switch (action.type) {
         case 'SET_GENRES':
-            console.log('setting genre', action.payload) // test function
+            //console.log('setting genre', action.payload) // test function
             return action.payload;
         default:
             return state;

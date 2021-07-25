@@ -16,6 +16,21 @@ router.get('/', (req, res) => {
 
 });
 
+router.post('/delete', (req, res) => {
+  console.log("req body is", req.body);
+  console.log('killing 51');
+  const qText = `DELETE FROM movies WHERE id=("id")
+  VALUES ($1)
+  RETURNING "id";`
+  pool.query(qText, [51])
+  .then( result => {
+    res.send(result.rows);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+})
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie
