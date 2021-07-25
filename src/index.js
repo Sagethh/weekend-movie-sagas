@@ -17,7 +17,8 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES_AND_GENRES', fetchMoviesAndGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
     yield takeEvery('ADD_MOVIE', addMovie)
-    yield takeEvery('DELETE_MOVIE', deleteMovie)
+    yield takeEvery('DELETE_MOVIES_GENRES', deleteMoviesGenres);
+    yield takeEvery('DELETE_MOVIE', deleteMovie);
 }
 
 function* fetchAllMovies() {
@@ -32,19 +33,39 @@ function* fetchAllMovies() {
     };
 };
 
-function* deleteMovie(movie) {
-    console.log('trying to delete movie with ID:', movie);
+function* deleteMoviesGenres(movie) {
+    //console.log('trying to delete movie with ID:', movie); // test function
     const movieToDelete = movie;
    
     try {
         const response = yield axios({
         method: 'DELETE',
-        url: '/api/movie',
+        url: '/api/movie/DELETEMOVIEANDGENRE',
+        data: movieToDelete
+        });
+        //console.log(response); // test function
+       // yield call (axios.delete, '/api/movie/delete', movieToDelete); // test function
+       // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete}); // test function
+       yield put({type: "DELETE_MOVIE", payload: movie})
+    }
+    catch(error) {
+        console.log('delete movie error', error);
+    };
+};
+
+function* deleteMovie(movie) {
+    console.log('trying to delete movie with ID:', movie);
+    const movieToDelete = movie;
+    try {
+        const response = yield axios({
+        method: 'DELETE',
+        url: '/api/movie/DELETEMOVIE',
         data: movieToDelete
         });
         console.log(response);
        // yield call (axios.delete, '/api/movie/delete', movieToDelete);
        // yield put ({type: 'DELETE_MOVIE', payload: movieToDelete});
+       yield put({type: "FETCH_MOVIES"})
     }
     catch(error) {
         console.log('delete movie error', error);

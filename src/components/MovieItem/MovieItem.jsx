@@ -34,7 +34,7 @@ function MovieItem(movie) {
         let movieToDelete = movie.movie.id
         console.log('trying to delete movie #', movieToDelete);
         dispatch({
-            type: 'DELETE_MOVIE',
+            type: 'DELETE_MOVIES_GENRES',
             payload: movieToDelete
         });
     };

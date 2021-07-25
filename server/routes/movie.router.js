@@ -16,13 +16,29 @@ router.get('/', (req, res) => {
 
 });
 
-router.delete('/', (req, res) => {
+router.delete('/DELETEMOVIEANDGENRE', (req, res) => {
   const qText = `DELETE FROM movies_genres WHERE movie_id=$1;`;
-  console.log(req.body.payload);
+  //console.log(req.body.payload); // test function
   pool.query(qText, [req.body.payload])
-  .then( result => {
+  .then( 
+    result => {
     res.send(result.rows);
+  }
+  )
+  .catch(err => {
+    console.log(err);
   })
+})
+
+router.delete('/DELETEMOVIE', (req, res) => {
+  const qText = `DELETE FROM movies WHERE id=$1;`;
+  console.log('trying to delete from movies:', req.body.payload.payload);
+  pool.query(qText, [req.body.payload.payload])
+  .then( 
+    result => {
+    res.send(result.rows);
+  }
+  )
   .catch(err => {
     console.log(err);
   })
