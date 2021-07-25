@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
 router.post('/UPDATE_MOVIE', (req, res) => {
   const qText = 'UPDATE movies SET title=$1, poster=$2, description=$3 WHERE id=$4;';
-  console.log(req.body);
+  //console.log(req.body); // test function
   pool.query(qText, [req.body.title, req.body.poster, req.body.description, req.body.id])
   .then (result => {
     res.send(result.rows);
