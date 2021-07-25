@@ -28,8 +28,8 @@ function* fetchAllMovies() {
     }
     catch {
         console.log('get all error');
-    }
-}
+    };
+};
 
 function* addMovie(movie) {
     try {
@@ -41,10 +41,8 @@ function* addMovie(movie) {
     }
     catch(error) {
         console.log('error in adding movie', error);
-    }
-
-}
-
+    };
+};
 
 function* fetchGenres(IDs) {
     try {
@@ -67,8 +65,8 @@ function* fetchGenres(IDs) {
     }
     catch {
         console.log('fetch genres error');
-    }
-}
+    };
+};
 
 function* fetchMoviesAndGenres(movie) {
     try {
@@ -86,8 +84,8 @@ function* fetchMoviesAndGenres(movie) {
     }
     catch {
         console.log('fetch moves and genres error');
-    }
-}
+    };
+};
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
@@ -99,19 +97,19 @@ const movies = (state = [], action) => {
             return action.payload;
         default:
             return state;
-    }
-}
+    };
+};
 
 // Used to store the movie genres
 const genres = (state = [], action) => {
     switch (action.type) {
         case 'SET_GENRES':
-            //console.log('setting genre', action.payload) // test function
+            console.log('setting genre', action.payload) // test function
             return action.payload;
         default:
             return state;
-    }
-}
+    };
+};
 
 // Create one store that all components can use
 const storeInstance = createStore(

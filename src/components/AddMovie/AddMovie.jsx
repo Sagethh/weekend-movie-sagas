@@ -19,8 +19,6 @@ const useModal = makeStyles((theme) => ({
 }));
 
 function AddMovie() {
-    const modal = useModal();
-    const dispatch = useDispatch();
     const [movieGenreLabel, setMovieGenreLabel] = useState('');
     const [movie, setMovie] = useState([]);
     const [movieTitle, setMovieTitle] = useState('');
@@ -29,28 +27,23 @@ function AddMovie() {
     const [moviePoster, setMoviePoster] = useState('');
     const [open, setOpen] = React.useState(false);
     const [genreModalOpen, setGenreModalOpen] = React.useState(false);
+    const modal = useModal();
+    const dispatch = useDispatch();
     const openGenreModal = () => {setGenreModalOpen(true);};
     const closeGenreModal = () => {setGenreModalOpen(false);};
     const handleOpen = () => {setOpen(true);};
-    const handleClose = () => { // closes the addMovie modal and clears all inputs
-        setOpen(false);
-        setMovieTitle('');
-        setMovieGenre('');
-        setMovieDescription('');
-        setMoviePoster('');
-    };
-    const numberHandler = [{value: 0,label: "Select An Option"},{value: 1,label: "Adventure"},{value: 2,label: "Animated"},{value: 3,label: "Biographical"},{value: 4,label: "Comedy"},{value: 5,label: "Disaster"},{value: 6,label: "Drama"},{value: 7,label: "Epic"},{value: 8,label: "Fantasy"},{value: 9,label: "Musical"},{value: 10,label: "Romantic"},{value: 11,label: "Science Fiction"},{value: 12,label: "Space-Opera"},{value: 13,label: "Superhero"},];
+    const handleClose = () => {setOpen(false); setMovieTitle(''); setMovieGenre(0); setMovieDescription(''); setMoviePoster('')}; // clears all inputs on modal close
+    const genreHandler = [{value: 0,label: "Select An Option"},{value: 1,label: "Adventure"},{value: 2,label: "Animated"},{value: 3,label: "Biographical"},{value: 4,label: "Comedy"},{value: 5,label: "Disaster"},{value: 6,label: "Drama"},{value: 7,label: "Epic"},{value: 8,label: "Fantasy"},{value: 9,label: "Musical"},{value: 10,label: "Romantic"},{value: 11,label: "Science Fiction"},{value: 12,label: "Space-Opera"},{value: 13,label: "Superhero"},];
     // big long thingy for materialUI, gives options 1-10 for the dropdown
-
     
     const submit = () => { // submit onClick function
         if (movieTitle == "" || movieDescription == "" || moviePoster == "" || movieGenre == 0) { // checks for empty inputs and declines to post if there are any
-            console.log('nice try bitch, fill it in');
+            alert('Please fill in all inputs');
             return false;
         };
         movie.push({title: movieTitle, description: movieDescription, poster: moviePoster, genre_id: movieGenre}); // pushes movie data into an array to send back to server
         //console.log(movieGenre); //test function
-        dispatch({
+        dispatch({ // sends an ADD_MOVIE request on submit with the payload of movie (all the data we collected in the form)
             type: "ADD_MOVIE",
             payload: movie
         });
@@ -80,8 +73,8 @@ function AddMovie() {
                 <TextField id="Movie-Poster-URL" label="Movie Poster URL" variant="outlined" value={moviePoster} onChange={(event) => setMoviePoster(event.target.value)}/>
                 <br />
                 <br />
-                <TextField select id="Movie Genre Selector" label="Genre" SelectProps={{native: true}} variant="outlined" onChange={(event) => setMovieGenre(event.target.value)}>
-                    {numberHandler.map((option) => (
+                <TextField select id="Movie Genre Selector" label="Genre" style={{width: "100%"}} SelectProps={{native: true}} variant="outlined" onChange={(event) => setMovieGenre(event.target.value)}>
+                    {genreHandler.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
